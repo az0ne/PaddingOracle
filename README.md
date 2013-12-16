@@ -25,3 +25,11 @@ The callback function is used to abstract away how the exploitation is to be don
 * gauging the response: If the decryption was successful and resulted in a valid message, return a `200` to the caller. If the decryption was sucessful(but did not result in a valid message) return a `404`. If an invalid padding exception was raised at the server side, return a `505`.
 
 An example that uses `PaddingAttack` can be found [here](https://github.com/eQu1NoX/PaddingOracle/blob/master/test_oracle_basic.py).
+
+Watching PaddingOracle in action
+--------------------------------
+Not very exciting to watch, you've been warned. ;-)
+
+However if you must, clone the repo, run test_server.py followed by
+test_oracle_basic.py
+
