@@ -33,7 +33,7 @@ class PaddingAttack(object):
                 data += self.enc_block
                 return_code = self.callback(data.encode("hex"))
                 if return_code == 200:
-                    self.logger.debug("[200] Valid decrpyption obtained.")
+                    self.logger.debug("[200] Valid decryption obtained.")
                 elif return_code == 500:
                     #self.logger.debug("[500], invalid padding.")
                     continue
