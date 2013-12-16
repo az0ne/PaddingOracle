@@ -30,6 +30,6 @@ Watching PaddingOracle in action
 --------------------------------
 Not very exciting to watch, you've been warned. ;-)
 
-However if you must, clone the repo, run test_server.py followed by
-test_oracle_basic.py
+However if you must, clone the repo, run `python test_server.py` and
+`python test_oracle_basic.py`
 
