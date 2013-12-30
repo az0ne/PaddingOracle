@@ -22,7 +22,7 @@ The callback function is used to abstract away how the exploitation is to be don
 
 * accepting a crafted ciphertext `enc_block`
 * sending `enc_block` over to the server(via cookies, POST, GET, whatever)
-* gauging the response: If the decryption was successful and resulted in a valid message, return a `200` to the caller. If the decryption was sucessful(but did not result in a valid message) return a `404`. If an invalid padding exception was raised at the server side, return a `505`.
+* gauging the response: If the decryption was successful and resulted in a valid message, return a `200` to the caller. If the decryption was sucessful(but did not result in a valid message) return a `404`. If an invalid padding exception was raised at the server side, return a `500`.
 
 An example that uses `PaddingAttack` can be found [here](https://github.com/eQu1NoX/PaddingOracle/blob/master/test_oracle_basic.py).
 
