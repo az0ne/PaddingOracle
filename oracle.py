@@ -23,7 +23,7 @@ class PaddingAttack(object):
     def attack(self):
         intermediate_bytes = []
         decrypted_bytes = []
-        pos = 0
+        pos = 1
         while pos <= 16:
             data = "\x00" * (self.blocklen-pos) + chr(pos) * pos
             for i in range(1, 0xff+1):
