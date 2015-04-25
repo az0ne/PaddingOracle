@@ -29,19 +29,22 @@ def main():
         logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("test_oracle_des")
 
-    p = PaddingAttack(sample_encrypted[0:16].decode("hex"), "LOLOLOLO", try_sending, 8)
+    global sample_encrypted
+    sample_encrypted = sample_encrypted.decode("hex")
+
+    p = PaddingAttack(sample_encrypted[0:8], "LOLOLOLO", try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[16:32].decode("hex"), sample_encrypted[0:16].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[8:16], sample_encrypted[0:8], try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[32:48].decode("hex"), sample_encrypted[16:32].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[16:24], sample_encrypted[8:16], try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[48:64].decode("hex"), sample_encrypted[32:48].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[24:32], sample_encrypted[16:24], try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[64:80].decode("hex"), sample_encrypted[48:64].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[32:40], sample_encrypted[24:32], try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[80:96].decode("hex"), sample_encrypted[64:80].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[40:48], sample_encrypted[32:40], try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[96:112].decode("hex"), sample_encrypted[80:96].decode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[48:56], sample_encrypted[40:48], try_sending, 8)
     logger.info(p.attack())
 
 
