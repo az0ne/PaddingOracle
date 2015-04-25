@@ -9,7 +9,7 @@ import Colorer
 sample_encrypted = "e72542db2eefcb6cf59cf6abf78979f91c9f0143c22a959eb5c59cd55b366d713f3a2f5614bcee12d372137dbd58629febf307b291aab18d88b5ca63727d10b2"
 
 def try_sending(enc_block):
-    base_url = "http://localhost/checkcreds?enc="
+    base_url = "http://localhost:7171/checkcreds?enc="
     base_url += enc_block
     response = urllib.urlopen(base_url)
     return_code = response.getcode()

@@ -98,7 +98,7 @@ def main():
 
     cipher = CryptoHelper.encrypt(MSG, "a"*(KEY/8))
     print cipher.encode("hex")
-    httpd = BaseHTTPServer.HTTPServer(("localhost", 80), Server)
+    httpd = BaseHTTPServer.HTTPServer(("localhost", 7171), Server)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt, e:
