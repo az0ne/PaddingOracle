@@ -1,6 +1,10 @@
+#!/usr/bin/python
+
 import BaseHTTPServer
 import urlparse
-from Crypto.Cipher import AES
+from Crypto.Cipher import DES3
+
+MSG = "Lets see if it works for a blocksize of 64bits with DES"
 
 class Server(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -36,35 +40,35 @@ class Server(BaseHTTPServer.BaseHTTPRequestHandler):
         return True
 
 class CryptoHelper:
-    IV = "LOLOLOLOLOLOLOLO"
+    IV = "LOLOLOLO"
 
     @staticmethod
     def encrypt(message, key):
         message = CryptoHelper.padPKCS7(message)
-        aes = AES.new(key, AES.MODE_CBC, CryptoHelper.IV)
-        ciphertext = aes.encrypt(message)
+        des = DES3.new(key, DES3.MODE_CBC, CryptoHelper.IV)
+        ciphertext = des.encrypt(message)
         return ciphertext
 
     @staticmethod
     def padPKCS7(message):
-        length = 16 - (len(message) % 16)
+        length = 8 - (len(message) % 8)
         message += chr(length)*length
         return message
 
     @staticmethod
     def decrypt(ciphertext, key):
-        aes = AES.new(key, AES.MODE_CBC, CryptoHelper.IV)
-        message = aes.decrypt(ciphertext)
+        des = DES3.new(key, DES3.MODE_CBC, CryptoHelper.IV)
+        message = des.decrypt(ciphertext)
         print ">>>", repr(message)
         message = CryptoHelper.unpadPKCS7(message)
         return message
 
     @staticmethod
     def unpadPKCS7(message):
-        if len(message)%16 or not message:
+        if len(message)%8 or not message:
             raise ValueError("Invalid message len")
         padlen = ord(message[-1])
-        if padlen > 16:
+        if padlen > 8:
             raise ValueError("Invalid padding")
         if padlen == 0:
             raise ValueError("Invalid padding")
@@ -75,9 +79,10 @@ class CryptoHelper:
 
 
 def main():
-    cipher = CryptoHelper.encrypt("b"*16, "a"*16)
+    global MSG
+    cipher = CryptoHelper.encrypt(MSG, "a"*16)
     print cipher.encode("hex")
-    httpd = BaseHTTPServer.HTTPServer(("localhost", 80), Server)
+    httpd = BaseHTTPServer.HTTPServer(("localhost", 7171), Server)
     try:
         httpd.serve_forever()
     except KeyboardInterrupt, e:

@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+
 import urllib
 import logging
 import sys
@@ -24,7 +27,7 @@ def main():
     else:
         print "For DEBUG info pass in the '-d' flag at the command line."
         logging.basicConfig(level=logging.INFO)
-    logger = logging.getLogger("test_oracle_basic")
+    logger = logging.getLogger("test_oracle_aes_192")
 
     p = PaddingAttack(sample_encrypted[0:32], "LOLOLOLOLOLOLOLO".encode("hex"), try_sending, 16)
     logger.info(p.attack())
