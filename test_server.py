@@ -2,6 +2,8 @@ import BaseHTTPServer
 import urlparse
 from Crypto.Cipher import AES
 
+MSG = "this1s some random message. lets see if you can decrypt"
+
 class Server(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
         parsed_path = urlparse.urlparse(self.path)
@@ -28,9 +30,10 @@ class Server(BaseHTTPServer.BaseHTTPRequestHandler):
                 return
 
     def checkcreds(self, enc):
+        global MSG
         key = "a" * 16
         message = CryptoHelper.decrypt(enc.decode("hex"), key)
-        if message != "b"*34:
+        if message != MSG:
             print "Invalid message is ", repr(message)
             return False
         return True
@@ -75,7 +78,8 @@ class CryptoHelper:
 
 
 def main():
-    cipher = CryptoHelper.encrypt("b"*34, "a"*16)
+    global MSG
+    cipher = CryptoHelper.encrypt(MSG, "a"*16)
     print cipher.encode("hex")
     httpd = BaseHTTPServer.HTTPServer(("localhost", 80), Server)
     try:
