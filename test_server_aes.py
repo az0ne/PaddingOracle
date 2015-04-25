@@ -1,8 +1,13 @@
+#!/usr/bin/python
+
 import BaseHTTPServer
 import urlparse
 from Crypto.Cipher import AES
 
+import sys
+
 MSG = "this1s some random message. lets see if you can decrypt"
+KEY = ""
 
 class Server(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_GET(self):
@@ -30,8 +35,8 @@ class Server(BaseHTTPServer.BaseHTTPRequestHandler):
                 return
 
     def checkcreds(self, enc):
-        global MSG
-        key = "a" * 16
+        global MSG, KEY
+        key = "a" * (KEY/8)
         message = CryptoHelper.decrypt(enc.decode("hex"), key)
         if message != MSG:
             print "Invalid message is ", repr(message)
@@ -76,10 +81,22 @@ class CryptoHelper:
                 raise ValueError("Invalid padding")
         return message[:-padlen]
 
+def Usage():
+    print "Usage: sudo ./test_server.py (128/192/256)"
+    sys.exit(-1)
 
 def main():
-    global MSG
-    cipher = CryptoHelper.encrypt(MSG, "a"*16)
+    global MSG, KEY
+
+    try:
+        KEY = int(sys.argv[1])
+    except IndexError, e:
+        Usage()
+
+    if KEY not in (128, 192, 256):
+        Usage()
+
+    cipher = CryptoHelper.encrypt(MSG, "a"*(KEY/8))
     print cipher.encode("hex")
     httpd = BaseHTTPServer.HTTPServer(("localhost", 80), Server)
     try:
