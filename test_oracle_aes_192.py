@@ -29,13 +29,16 @@ def main():
         logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("test_oracle_aes_192")
 
-    p = PaddingAttack(sample_encrypted[0:32].decode("hex"), "LOLOLOLOLOLOLOLO", try_sending, 16)
+    global sample_encrypted
+    sample_encrypted = sample_encrypted.decode("hex")
+
+    p = PaddingAttack(sample_encrypted[0:16], "LOLOLOLOLOLOLOLO", try_sending, 16)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[32:64].decode("hex"), sample_encrypted[0:32].decode("hex"), try_sending, 16)
+    p = PaddingAttack(sample_encrypted[16:32], sample_encrypted[0:16], try_sending, 16)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[64:96].decode("hex"), sample_encrypted[32:64].decode("hex"), try_sending, 16)
+    p = PaddingAttack(sample_encrypted[32:48], sample_encrypted[16:32], try_sending, 16)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[96:128].decode("hex"), sample_encrypted[64:96].decode("hex"), try_sending, 16)
+    p = PaddingAttack(sample_encrypted[48:64], sample_encrypted[32:48], try_sending, 16)
     logger.info(p.attack())
 
 if __name__ == '__main__':
