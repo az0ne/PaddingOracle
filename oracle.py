@@ -1,4 +1,6 @@
 import logging
+#import logmanager
+import Colorer
 
 def xord(string_one, string_two):
     output = ""
@@ -11,12 +13,11 @@ class PaddingAttack(object):
     Perform a padding attack using a single block of crafted
     ciphertext
     """
-    def __init__(self, enc_block, IV, callback, blocklen=16, lvl=logging.INFO):
+    def __init__(self, enc_block, IV, callback, blocklen=16):
         self.enc_block = enc_block.decode("hex")
         self.IV = IV.decode("hex")
         self.callback = callback
         self.blocklen = blocklen
-        logging.basicConfig(level=lvl)
         self.logger = logging.getLogger(__name__)
 
 
