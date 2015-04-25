@@ -13,7 +13,7 @@ sample_encrypted = "c9f2a3f0dc970fe8cf6a084b808569fa8f4106c6e916702377a660178856
 
 def try_sending(enc_block):
     base_url = "http://localhost:7171/checkcreds?enc="
-    base_url += enc_block
+    base_url += enc_block.encode("hex")
     response = urllib.urlopen(base_url)
     return_code = response.getcode()
     if return_code in [200, 404, 500]:
@@ -29,19 +29,19 @@ def main():
         logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger("test_oracle_des")
 
-    p = PaddingAttack(sample_encrypted[0:16], "LOLOLOLO".encode("hex"), try_sending, 8)
+    p = PaddingAttack(sample_encrypted[0:16].decode("hex"), "LOLOLOLO", try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[16:32], sample_encrypted[0:16], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[16:32].decode("hex"), sample_encrypted[0:16].decode("hex"), try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[32:48], sample_encrypted[16:32], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[32:48].decode("hex"), sample_encrypted[16:32].decode("hex"), try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[48:64], sample_encrypted[32:48], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[48:64].decode("hex"), sample_encrypted[32:48].decode("hex"), try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[64:80], sample_encrypted[48:64], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[64:80].decode("hex"), sample_encrypted[48:64].decode("hex"), try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[80:96], sample_encrypted[64:80], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[80:96].decode("hex"), sample_encrypted[64:80].decode("hex"), try_sending, 8)
     logger.info(p.attack())
-    p = PaddingAttack(sample_encrypted[96:112], sample_encrypted[80:96], try_sending, 8)
+    p = PaddingAttack(sample_encrypted[96:112].decode("hex"), sample_encrypted[80:96].decode("hex"), try_sending, 8)
     logger.info(p.attack())
 
 
